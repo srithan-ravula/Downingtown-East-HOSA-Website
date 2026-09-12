@@ -1,0 +1,13 @@
+{
+  "name": "downingtown-east-hosa-website",
+  "version": "1.0.0",
+  "description": "Official chapter resource and event registration hub for D-East HOSA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
