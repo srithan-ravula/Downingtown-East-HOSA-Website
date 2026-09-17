@@ -240,7 +240,7 @@
           </div>
         </div>
 
-        <!-- Management Lists for Deleting Content (Events, Announcements, Dates, Meetings) -->
+        <!-- Management Lists for Deleting Content -->
         <div class="grid md:grid-cols-2 gap-6">
           <!-- Custom Events Manager -->
           <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
@@ -319,7 +319,20 @@
     let globalDates = [];
     let globalMeetings = [];
     let currentUser = null;
+    let toastTimeout;
 
+    // Toast Functionality
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3000);
+    }
+
+    // Auth & Navigation
     function parseJwt(token) {
       try {
         const base64Url = token.split('.')[1];
@@ -395,6 +408,7 @@
       }
     }
 
+    // Initialization
     async function init() {
       try {
         const evtRes = await fetch('/api/events');
@@ -437,6 +451,7 @@
       renderOfficerMeetings();
     }
 
+    // Events Rendering
     function setupCategoryFilterOptions(events) {
       const categories = [...new Set(events.map(e => e.category))];
       const select = document.getElementById('category-filter');
@@ -484,7 +499,94 @@
       });
     }
 
-    // Officer Event Management Functions
+    // Event Registration
+    async function submitRegistration(e) {
+      e.preventDefault();
+      if (!currentUser) return alert("You must sign in with Google first!");
+      
+      const eventId = document.getElementById('reg-event').value;
+      if (!eventId) return alert("Please select an event.");
+
+      const res = await fetch('/api/signups', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userEmail: currentUser.email,
+          userName: currentUser.name,
+          eventId: eventId
+        })
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        showToast("Event registration successful!");
+        if(OFFICER_EMAILS.includes(currentUser.email)) loadSignups();
+      } else {
+        alert(data.error || "Registration failed.");
+      }
+    }
+
+    // Announcements
+    function renderAnnouncements(announcements) {
+      const container = document.getElementById('announcements-container');
+      if (announcements.length === 0) {
+        container.innerHTML = `<p class="text-slate-500 text-sm col-span-2">No active announcements.</p>`;
+        return;
+      }
+      container.innerHTML = announcements.map(a => `
+        <div class="bg-white border border-slate-200 p-5 rounded-xl shadow-sm hover:shadow-md transition">
+          <div class="flex justify-between items-start mb-2">
+            <h4 class="font-bold text-slate-900">${a.title}</h4>
+            <span class="text-[10px] uppercase tracking-wider font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded">${a.date}</span>
+          </div>
+          <p class="text-sm text-slate-600">${a.message}</p>
+        </div>
+      `).join('');
+    }
+
+    // Dates
+    function renderDates(dates) {
+      const container = document.getElementById('dates-container');
+      if (dates.length === 0) {
+        container.innerHTML = `<p class="text-slate-500 text-sm">No upcoming dates scheduled.</p>`;
+        return;
+      }
+      container.innerHTML = dates.map(d => `
+        <div class="flex items-start gap-4 p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+          <div class="bg-blue-50 text-blue-700 w-12 h-12 rounded-lg flex flex-col items-center justify-center shrink-0 border border-blue-100">
+            <span class="text-xs font-bold uppercase">${d.date.split(' ')[0] || ''}</span>
+            <span class="text-lg font-black leading-none">${d.date.split(' ')[1]?.replace(',','') || '*'}</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900">${d.title}</h4>
+            <p class="text-sm text-slate-600 mt-1">${d.description}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Meetings
+    function renderMeetings(meetings) {
+      const tbody = document.getElementById('meetings-table-body');
+      if(meetings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400">No meetings scheduled.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = meetings.map(m => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-4 border-b border-slate-100 font-medium text-slate-900 whitespace-nowrap">${m.date}</td>
+          <td class="p-4 border-b border-slate-100 text-slate-600">${m.topic}</td>
+          <td class="p-4 border-b border-slate-100 text-slate-600">${m.location}</td>
+          <td class="p-4 border-b border-slate-100">
+            <span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded text-xs font-semibold">Scheduled</span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ----------------------------------------------------
+    // OFFICER ADMIN FUNCTIONS (Events, Signups, Creation)
+    // ----------------------------------------------------
     async function createEvent() {
       const name = document.getElementById('ev-name').value;
       const category = document.getElementById('ev-cat').value;
@@ -542,7 +644,154 @@
       `).join('');
     }
 
-    // Student Signups & Stats Loader / Editor
+    async function createAnnouncement() {
+      const title = document.getElementById('ann-title').value;
+      const date = document.getElementById('ann-date').value;
+      const message = document.getElementById('ann-msg').value;
+      if(!title || !message) return alert("Title and message required.");
+
+      const res = await fetch('/api/announcements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, date, message })
+      });
+      const data = await res.json();
+      if(data.success) {
+        globalAnnouncements = data.data;
+        renderAnnouncements(globalAnnouncements);
+        renderOfficerAnnouncements();
+        document.getElementById('ann-title').value = '';
+        document.getElementById('ann-date').value = '';
+        document.getElementById('ann-msg').value = '';
+        showToast("Announcement published.");
+      }
+    }
+
+    async function deleteAnnouncement(id) {
+      if(!confirm("Delete announcement?")) return;
+      const res = await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if(data.success) {
+        globalAnnouncements = data.data;
+        renderAnnouncements(globalAnnouncements);
+        renderOfficerAnnouncements();
+        showToast("Announcement deleted.");
+      }
+    }
+
+    function renderOfficerAnnouncements() {
+      const container = document.getElementById('officer-announcements-list');
+      if(globalAnnouncements.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400">No announcements.</p>';
+        return;
+      }
+      container.innerHTML = globalAnnouncements.map(a => `
+        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded flex items-center justify-between text-xs">
+          <span class="font-semibold text-slate-800 truncate pr-2">${a.title}</span>
+          <button onclick="deleteAnnouncement('${a.id}')" class="text-red-600 hover:text-red-800 font-bold px-2 shrink-0">✕</button>
+        </div>
+      `).join('');
+    }
+
+    async function createDate() {
+      const title = document.getElementById('date-title').value;
+      const date = document.getElementById('date-date').value;
+      const description = document.getElementById('date-desc').value;
+      if(!title || !date) return alert("Title and date required.");
+
+      const res = await fetch('/api/dates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, date, description })
+      });
+      const data = await res.json();
+      if(data.success) {
+        globalDates = data.data;
+        renderDates(globalDates);
+        renderOfficerDates();
+        document.getElementById('date-title').value = '';
+        document.getElementById('date-date').value = '';
+        document.getElementById('date-desc').value = '';
+        showToast("Date added.");
+      }
+    }
+
+    async function deleteDate(id) {
+      if(!confirm("Delete this date?")) return;
+      const res = await fetch(`/api/dates/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if(data.success) {
+        globalDates = data.data;
+        renderDates(globalDates);
+        renderOfficerDates();
+        showToast("Date removed.");
+      }
+    }
+
+    function renderOfficerDates() {
+      const container = document.getElementById('officer-dates-list');
+      if(globalDates.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400">No dates.</p>';
+        return;
+      }
+      container.innerHTML = globalDates.map(d => `
+        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded flex items-center justify-between text-xs">
+          <span class="font-semibold text-slate-800 truncate pr-2">${d.title}</span>
+          <button onclick="deleteDate('${d.id}')" class="text-red-600 hover:text-red-800 font-bold px-2 shrink-0">✕</button>
+        </div>
+      `).join('');
+    }
+
+    async function createMeeting() {
+      const topic = document.getElementById('meet-topic').value;
+      const date = document.getElementById('meet-date').value;
+      const location = document.getElementById('meet-loc').value;
+      if(!topic || !date) return alert("Topic and date required.");
+
+      const res = await fetch('/api/meetings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, date, location })
+      });
+      const data = await res.json();
+      if(data.success) {
+        globalMeetings = data.data;
+        renderMeetings(globalMeetings);
+        renderOfficerMeetings();
+        document.getElementById('meet-topic').value = '';
+        document.getElementById('meet-date').value = '';
+        document.getElementById('meet-loc').value = '';
+        showToast("Meeting scheduled.");
+      }
+    }
+
+    async function deleteMeeting(id) {
+      if(!confirm("Delete this meeting?")) return;
+      const res = await fetch(`/api/meetings/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if(data.success) {
+        globalMeetings = data.data;
+        renderMeetings(globalMeetings);
+        renderOfficerMeetings();
+        showToast("Meeting canceled.");
+      }
+    }
+
+    function renderOfficerMeetings() {
+      const container = document.getElementById('officer-meetings-list');
+      if(globalMeetings.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400">No meetings.</p>';
+        return;
+      }
+      container.innerHTML = globalMeetings.map(m => `
+        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded flex items-center justify-between text-xs">
+          <span class="font-semibold text-slate-800 truncate pr-2">${m.topic}</span>
+          <button onclick="deleteMeeting('${m.id}')" class="text-red-600 hover:text-red-800 font-bold px-2 shrink-0">✕</button>
+        </div>
+      `).join('');
+    }
+
+    // Student Signups & Stats Manager
     async function loadSignups() {
       if (!currentUser || !OFFICER_EMAILS.includes(currentUser.email)) return;
       try {
@@ -563,13 +812,13 @@
               <span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded text-xs font-semibold">${s.eventName}</span>
             </td>
             <td class="p-4 text-center border-b border-slate-100">
-              <input type="checkbox" ${s.duesPaid ? 'checked' : ''} onchange="updateSignupStat(${s.id}, 'duesPaid', this.checked)" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+              <input type="checkbox" ${s.duesPaid ? 'checked' : ''} onchange="updateSignupStat('${s.id}', 'duesPaid', this.checked)" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
             </td>
             <td class="p-4 text-center border-b border-slate-100">
-              <input type="checkbox" ${s.preSubmitted ? 'checked' : ''} onchange="updateSignupStat(${s.id}, 'preSubmitted', this.checked)" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+              <input type="checkbox" ${s.preSubmitted ? 'checked' : ''} onchange="updateSignupStat('${s.id}', 'preSubmitted', this.checked)" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
             </td>
             <td class="p-4 text-right border-b border-slate-100">
-              <button onclick="deleteSignup(${s.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold">Delete</button>
+              <button onclick="deleteSignup('${s.id}')" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1 bg-red-50 rounded">Delete</button>
             </td>
           </tr>
         `).join('');
@@ -592,233 +841,20 @@
     }
 
     async function deleteSignup(id) {
-      if (!confirm("Remove this student registration?")) return;
+      if(!confirm("Are you sure you want to permanently delete this student's registration?")) return;
       const res = await fetch(`/api/signups/${id}`, { method: 'DELETE' });
-      if ((await res.json()).success) {
-        loadSignups();
-        showToast("Registration removed.");
-      }
-    }
-
-    async function createAnnouncement() {
-      const title = document.getElementById('ann-title').value;
-      const date = document.getElementById('ann-date').value;
-      const message = document.getElementById('ann-msg').value;
-      if (!title || !message) return alert("Fill in required fields.");
-
-      const res = await fetch('/api/announcements', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, date, message })
-      });
       const data = await res.json();
-      if (data.success) {
-        globalAnnouncements = data.data;
-        renderAnnouncements(globalAnnouncements);
-        if (currentUser && OFFICER_EMAILS.includes(currentUser.email)) renderOfficerAnnouncements();
-        showToast("Announcement published.");
-        document.getElementById('ann-title').value = '';
-        document.getElementById('ann-msg').value = '';
-        document.getElementById('ann-date').value = '';
+      if(data.success) {
+        showToast("Registration deleted.");
+        loadSignups(); // Refresh the table
+      } else {
+        alert("Failed to delete signup.");
       }
     }
 
-    async function deleteAnnouncement(id) {
-      if (!confirm("Delete this announcement?")) return;
-      const res = await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (data.success) {
-        globalAnnouncements = data.data;
-        renderAnnouncements(globalAnnouncements);
-        renderOfficerAnnouncements();
-        showToast("Announcement removed.");
-      }
-    }
+    // Run Initialization on Load
+    window.addEventListener('DOMContentLoaded', init);
 
-    async function createDate() {
-      const title = document.getElementById('date-title').value;
-      const date = document.getElementById('date-date').value;
-      const description = document.getElementById('date-desc').value;
-      if (!title || !date) return alert("Fill in required fields.");
-
-      const res = await fetch('/api/dates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, date, description })
-      });
-      const data = await res.json();
-      if (data.success) {
-        globalDates = data.data;
-        renderDates(globalDates);
-        if (currentUser && OFFICER_EMAILS.includes(currentUser.email)) renderOfficerDates();
-        showToast("Date added.");
-        document.getElementById('date-title').value = '';
-        document.getElementById('date-date').value = '';
-        document.getElementById('date-desc').value = '';
-      }
-    }
-
-    async function deleteDate(id) {
-      if (!confirm("Delete this date entry?")) return;
-      const res = await fetch(`/api/dates/${id}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (data.success) {
-        globalDates = data.data;
-        renderDates(globalDates);
-        renderOfficerDates();
-        showToast("Date removed.");
-      }
-    }
-
-    async function createMeeting() {
-      const topic = document.getElementById('meet-topic').value;
-      const date = document.getElementById('meet-date').value;
-      const location = document.getElementById('meet-loc').value;
-      if (!topic || !date) return alert("Fill in required fields.");
-
-      const res = await fetch('/api/meetings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, date, location })
-      });
-      const data = await res.json();
-      if (data.success) {
-        globalMeetings = data.data;
-        renderMeetings(globalMeetings);
-        if (currentUser && OFFICER_EMAILS.includes(currentUser.email)) renderOfficerMeetings();
-        showToast("Meeting scheduled.");
-        document.getElementById('meet-topic').value = '';
-        document.getElementById('meet-date').value = '';
-        document.getElementById('meet-loc').value = '';
-      }
-    }
-
-    async function deleteMeeting(id) {
-      if (!confirm("Delete this meeting?")) return;
-      const res = await fetch(`/api/meetings/${id}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (data.success) {
-        globalMeetings = data.data;
-        renderMeetings(globalMeetings);
-        renderOfficerMeetings();
-        showToast("Meeting removed.");
-      }
-    }
-
-    function renderAnnouncements(data) {
-      document.getElementById('announcements-container').innerHTML = data.map(a => `
-        <div class="bg-white border border-slate-200 p-5 rounded-xl shadow-sm relative overflow-hidden">
-          <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-600"></div>
-          <div class="flex justify-between items-start mb-2">
-            <h4 class="font-bold text-slate-900 text-sm">${a.title}</h4>
-            <span class="text-[10px] text-slate-400 font-medium">${a.date}</span>
-          </div>
-          <p class="text-xs text-slate-600 leading-relaxed">${a.message}</p>
-        </div>
-      `).join('');
-    }
-
-    function renderOfficerAnnouncements() {
-      const container = document.getElementById('officer-announcements-list');
-      if (globalAnnouncements.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400">No announcements found.</p>`;
-        return;
-      }
-      container.innerHTML = globalAnnouncements.map(a => `
-        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded flex items-center justify-between text-xs">
-          <span class="font-semibold text-slate-800 truncate max-w-[200px]">${a.title}</span>
-          <button onclick="deleteAnnouncement(${a.id})" class="text-red-600 hover:text-red-800 font-bold px-2">✕</button>
-        </div>
-      `).join('');
-    }
-
-    function renderDates(data) {
-      document.getElementById('dates-container').innerHTML = data.map(d => `
-        <div class="bg-white border border-slate-200 p-5 rounded-xl shadow-sm flex items-center gap-5">
-          <div class="bg-blue-50 text-blue-700 px-4 py-3 rounded-lg text-center min-w-[120px] border border-blue-100">
-            <span class="block text-xs font-bold uppercase tracking-wider">Deadline</span>
-          </div>
-          <div>
-            <h4 class="text-slate-900 font-bold">${d.title}</h4>
-            <p class="text-blue-600 text-sm font-semibold mb-1">${d.date}</p>
-            <p class="text-slate-500 text-sm">${d.description}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderOfficerDates() {
-      const container = document.getElementById('officer-dates-list');
-      if (globalDates.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400">No dates found.</p>`;
-        return;
-      }
-      container.innerHTML = globalDates.map(d => `
-        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded flex items-center justify-between text-xs">
-          <div>
-            <span class="font-semibold text-slate-800">${d.title}</span>
-            <span class="text-slate-400 ml-1">(${d.date})</span>
-          </div>
-          <button onclick="deleteDate(${d.id})" class="text-red-600 hover:text-red-800 font-bold px-2">✕</button>
-        </div>
-      `).join('');
-    }
-
-    function renderMeetings(data) {
-      document.getElementById('meetings-table-body').innerHTML = data.map(m => `
-        <tr class="hover:bg-slate-50 transition">
-          <td class="p-4 text-slate-800 font-medium border-b border-slate-100 whitespace-nowrap">${m.date}</td>
-          <td class="p-4 text-slate-600 border-b border-slate-100">${m.topic}</td>
-          <td class="p-4 text-slate-500 border-b border-slate-100 text-sm">${m.location}</td>
-          <td class="p-4 border-b border-slate-100">
-            <span class="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-semibold">${m.status}</span>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function renderOfficerMeetings() {
-      const container = document.getElementById('officer-meetings-list');
-      if (globalMeetings.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400">No meetings found.</p>`;
-        return;
-      }
-      container.innerHTML = globalMeetings.map(m => `
-        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded flex items-center justify-between text-xs">
-          <div>
-            <span class="font-semibold text-slate-800">${m.topic}</span>
-            <span class="text-slate-400 ml-1">(${m.date})</span>
-          </div>
-          <button onclick="deleteMeeting(${m.id})" class="text-red-600 hover:text-red-800 font-bold px-2">✕</button>
-        </div>
-      `).join('');
-    }
-
-    async function submitRegistration(e) {
-      e.preventDefault();
-      if (!currentUser) return alert("Please sign in with Google prior to submitting.");
-      
-      const eventId = document.getElementById('reg-event').value;
-      const target = globalEvents.find(ev => ev.id === eventId);
-
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail: currentUser.email, userName: currentUser.name, eventId, eventName: target.name })
-      });
-      if ((await res.json()).success) {
-        showToast("Registration saved successfully.");
-      }
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').innerText = message;
-      toast.classList.remove('translate-y-24', 'opacity-0');
-      setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
-    }
-
-    window.onload = init;
   </script>
 </body>
 </html>
