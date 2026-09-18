@@ -1,13 +1,12 @@
 {
-  "name": "downingtown-east-hosa-website",
+  "name": "hosa-web-portal",
   "version": "1.0.0",
-  "description": "Official chapter resource and event registration hub for D-East HOSA",
+  "description": "Downingtown East HOSA Portal",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.18.2"
   }
 }
