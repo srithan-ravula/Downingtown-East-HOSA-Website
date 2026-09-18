@@ -48,6 +48,36 @@ function showSection(sectionId) {
   document.getElementById(`${sectionId}-section`).classList.add('active');
 }
 
+// Officer Login Authentication
+document.getElementById('officer-login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const emailInput = document.getElementById('officer-email').value;
+  const loginMessage = document.getElementById('login-message');
+
+  try {
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailInput })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      document.getElementById('officer-login-view').style.display = 'none';
+      document.getElementById('officer-dashboard-view').style.display = 'block';
+    } else {
+      loginMessage.style.color = 'red';
+      loginMessage.textContent = '❌ ' + data.message;
+    }
+  } catch (error) {
+    loginMessage.style.color = 'red';
+    loginMessage.textContent = '❌ Server error. Try again.';
+  }
+});
+
+// Student Registration Form
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -83,6 +113,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
   }
 });
 
+// Officer Add Event Form
 document.getElementById('officer-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
