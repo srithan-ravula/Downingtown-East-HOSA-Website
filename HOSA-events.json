@@ -1,485 +1,71 @@
 [
-  {
-    "id": "evt_1",
-    "name": "Behavioral Health",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_2",
-    "name": "Biomedical Equipment Technician",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_3",
-    "name": "Dental Terminology",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_4",
-    "name": "Health Informatics",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_5",
-    "name": "Healthcare Administration",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_6",
-    "name": "Human Growth & Development",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_7",
-    "name": "Medical Law & Ethics",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_8",
-    "name": "Medical Math",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_9",
-    "name": "Medical Reading",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_10",
-    "name": "Medical Spelling",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_11",
-    "name": "Medical Terminology",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_12",
-    "name": "Nutrition",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_13",
-    "name": "Pathophysiology",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_14",
-    "name": "Pharmacology",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_15",
-    "name": "World Health & Disparities",
-    "category": "Health Science Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_16",
-    "name": "Biotechnology",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_17",
-    "name": "Clinical Lab Science",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_18",
-    "name": "Clinical Nursing",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_19",
-    "name": "Clinical Specialty",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_20",
-    "name": "Dental Science",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_21",
-    "name": "Family Medicine Physician",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_22",
-    "name": "Home Health Aide",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_23",
-    "name": "Genetics",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_24",
-    "name": "Medical Assisting",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_25",
-    "name": "Nursing Assisting",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_26",
-    "name": "Occupational Therapy",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_27",
-    "name": "Patient Care Technician",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_28",
-    "name": "Pharmacy Science",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_29",
-    "name": "Phlebotomy",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_30",
-    "name": "Physical Therapy",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_31",
-    "name": "Physician Assistant",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_32",
-    "name": "Respiratory Therapy",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_33",
-    "name": "Sports Medicine",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_34",
-    "name": "Surgical Technologist",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_35",
-    "name": "Veterinary Science",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_36",
-    "name": "Personal Care (IDEA)",
-    "category": "Health Professions Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_37",
-    "name": "CERT Skills",
-    "category": "Emergency Preparedness Events",
-    "team": "Team of 2",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_38",
-    "name": "CPR/First Aid",
-    "category": "Emergency Preparedness Events",
-    "team": "Team of 2",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_39",
-    "name": "Emergency Medical Technician",
-    "category": "Emergency Preparedness Events",
-    "team": "Team of 2",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_40",
-    "name": "Epidemiology",
-    "category": "Emergency Preparedness Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_41",
-    "name": "Mental Health Promotion",
-    "category": "Emergency Preparedness Events",
-    "team": "Team of 2-6",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_42",
-    "name": "MRC Partnership",
-    "category": "Emergency Preparedness Events",
-    "team": "Team of 2-6",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_43",
-    "name": "Public Health",
-    "category": "Emergency Preparedness Events",
-    "team": "Team of 2-6",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_44",
-    "name": "Life Support Skills (IDEA)",
-    "category": "Emergency Preparedness Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_45",
-    "name": "Extemporaneous Writing - Health Policy",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_46",
-    "name": "Health Career Photography",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_47",
-    "name": "Healthy Living",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_48",
-    "name": "Job Seeking Skills",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_49",
-    "name": "Organizational Leadership",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_50",
-    "name": "Prepared Speaking",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_51",
-    "name": "Researched Persuasive Writing & Speaking",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_52",
-    "name": "Interviewing Skills (IDEA)",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_53",
-    "name": "Speaking Skills (IDEA)",
-    "category": "Leadership Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_54",
-    "name": "Biomedical Debate",
-    "category": "Teamwork Events",
-    "team": "Team of 3-4",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_55",
-    "name": "Community Awareness",
-    "category": "Teamwork Events",
-    "team": "Team of 2-4",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_56",
-    "name": "Creative Problem Solving",
-    "category": "Teamwork Events",
-    "team": "Team of 3-4",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_57",
-    "name": "Forensic Science",
-    "category": "Teamwork Events",
-    "team": "Team of 2",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_58",
-    "name": "Health Career Display",
-    "category": "Teamwork Events",
-    "team": "Team of 2",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_59",
-    "name": "Health Education",
-    "category": "Teamwork Events",
-    "team": "Team of 2-4",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_60",
-    "name": "HOSA Bowl",
-    "category": "Teamwork Events",
-    "team": "Team of 3-4",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_61",
-    "name": "Medical Innovation",
-    "category": "Teamwork Events",
-    "team": "Team of 2-4",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_62",
-    "name": "Parliamentary Procedure",
-    "category": "Teamwork Events",
-    "team": "Team of 5-8",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_63",
-    "name": "Public Service Announcement",
-    "category": "Teamwork Events",
-    "team": "Team of 3-6",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_64",
-    "name": "Barbara James Service Award",
-    "category": "Recognition Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_65",
-    "name": "HOSA Happenings",
-    "category": "Recognition Events",
-    "team": "Chapter",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_66",
-    "name": "Healthcare Issues Exam",
-    "category": "Recognition Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_67",
-    "name": "National Service Project",
-    "category": "Recognition Events",
-    "team": "Chapter",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_68",
-    "name": "Emotional Well-Being Challenge",
-    "category": "Recognition Events",
-    "team": "Chapter",
-    "url": "https://hosa.org/guidelines/"
-  },
-  {
-    "id": "evt_69",
-    "name": "Outstanding State Leader",
-    "category": "Recognition Events",
-    "team": "Individual",
-    "url": "https://hosa.org/guidelines/"
-  }
+  { "id": "evt_1", "name": "Behavioral Health", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_2", "name": "Biomedical Equipment Technician", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_3", "name": "Dental Terminology", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_4", "name": "Health Informatics", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_5", "name": "Healthcare Administration", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_6", "name": "Human Growth & Development", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_7", "name": "Medical Law & Ethics", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_8", "name": "Medical Math", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_9", "name": "Medical Reading", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_10", "name": "Medical Spelling", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_11", "name": "Medical Terminology", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_12", "name": "Nutrition", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_13", "name": "Pathophysiology", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_14", "name": "Pharmacology", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_15", "name": "World Health & Disparities", "category": "Health Science Events", "team": "Individual" },
+  { "id": "evt_16", "name": "Biotechnology", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_17", "name": "Clinical Lab Science", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_18", "name": "Clinical Nursing", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_19", "name": "Clinical Specialty", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_20", "name": "Dental Science", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_21", "name": "Family Medicine Physician", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_22", "name": "Home Health Aide", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_23", "name": "Genetics", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_24", "name": "Medical Assisting", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_25", "name": "Nursing Assisting", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_26", "name": "Occupational Therapy", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_27", "name": "Patient Care Technician", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_28", "name": "Pharmacy Science", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_29", "name": "Phlebotomy", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_30", "name": "Physical Therapy", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_31", "name": "Physician Assistant", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_32", "name": "Respiratory Therapy", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_33", "name": "Sports Medicine", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_34", "name": "Surgical Technologist", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_35", "name": "Veterinary Science", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_36", "name": "Personal Care (IDEA)", "category": "Health Professions Events", "team": "Individual" },
+  { "id": "evt_37", "name": "CERT Skills", "category": "Emergency Preparedness Events", "team": "Team of 2" },
+  { "id": "evt_38", "name": "CPR/First Aid", "category": "Emergency Preparedness Events", "team": "Team of 2" },
+  { "id": "evt_39", "name": "Emergency Medical Technician", "category": "Emergency Preparedness Events", "team": "Team of 2" },
+  { "id": "evt_40", "name": "Epidemiology", "category": "Emergency Preparedness Events", "team": "Individual" },
+  { "id": "evt_41", "name": "Mental Health Promotion", "category": "Emergency Preparedness Events", "team": "Team of 2-6" },
+  { "id": "evt_42", "name": "MRC Partnership", "category": "Emergency Preparedness Events", "team": "Team of 2-6" },
+  { "id": "evt_43", "name": "Public Health", "category": "Emergency Preparedness Events", "team": "Team of 2-6" },
+  { "id": "evt_44", "name": "Life Support Skills (IDEA)", "category": "Emergency Preparedness Events", "team": "Individual" },
+  { "id": "evt_45", "name": "Extemporaneous Writing - Health Policy", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_46", "name": "Health Career Photography", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_47", "name": "Healthy Living", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_48", "name": "Job Seeking Skills", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_49", "name": "Organizational Leadership", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_50", "name": "Prepared Speaking", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_51", "name": "Researched Persuasive Writing & Speaking", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_52", "name": "Interviewing Skills (IDEA)", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_53", "name": "Speaking Skills (IDEA)", "category": "Leadership Events", "team": "Individual" },
+  { "id": "evt_54", "name": "Biomedical Debate", "category": "Teamwork Events", "team": "Team of 3-4" },
+  { "id": "evt_55", "name": "Community Awareness", "category": "Teamwork Events", "team": "Team of 2-4" },
+  { "id": "evt_56", "name": "Creative Problem Solving", "category": "Teamwork Events", "team": "Team of 3-4" },
+  { "id": "evt_57", "name": "Forensic Science", "category": "Teamwork Events", "team": "Team of 2" },
+  { "id": "evt_58", "name": "Health Career Display", "category": "Teamwork Events", "team": "Team of 2" },
+  { "id": "evt_59", "name": "Health Education", "category": "Teamwork Events", "team": "Team of 2-4" },
+  { "id": "evt_60", "name": "HOSA Bowl", "category": "Teamwork Events", "team": "Team of 3-4" },
+  { "id": "evt_61", "name": "Medical Innovation", "category": "Teamwork Events", "team": "Team of 2-4" },
+  { "id": "evt_62", "name": "Parliamentary Procedure", "category": "Teamwork Events", "team": "Team of 5-8" },
+  { "id": "evt_63", "name": "Public Service Announcement", "category": "Teamwork Events", "team": "Team of 3-6" },
+  { "id": "evt_64", "name": "Barbara James Service Award", "category": "Recognition Events", "team": "Individual" },
+  { "id": "evt_65", "name": "HOSA Happenings", "category": "Recognition Events", "team": "Chapter" },
+  { "id": "evt_66", "name": "Healthcare Issues Exam", "category": "Recognition Events", "team": "Individual" },
+  { "id": "evt_67", "name": "National Service Project", "category": "Recognition Events", "team": "Chapter" },
+  { "id": "evt_68", "name": "Emotional Well-Being Challenge", "category": "Recognition Events", "team": "Chapter" },
+  { "id": "evt_69", "name": "Outstanding State Leader", "category": "Recognition Events", "team": "Individual" }
 ]
