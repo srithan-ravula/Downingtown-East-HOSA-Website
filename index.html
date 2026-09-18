@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Downingtown East HOSA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1>Downingtown East HOSA</h1>
+      <nav>
+        <button onclick="showSection('events')">Events List</button>
+        <button onclick="showSection('signup')">Registration</button>
+        <button onclick="showSection('officer')">Officer Portal</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- SECTION: EVENTS LIST -->
+    <section id="events-section" class="active">
+      <h2>Competitive Events</h2>
+      <p>Browse all available HOSA events for this year.</p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Category</th>
+              <th>Team Size</th>
+            </tr>
+          </thead>
+          <tbody id="event-table-body">
+            <!-- Events inject here dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION: SIGNUP FORM -->
+    <section id="signup-section">
+      <h2>Student Registration</h2>
+      <form id="signup-form">
+        <label for="studentName">Full Name:</label>
+        <input type="text" id="studentName" required placeholder="Jane Doe">
+
+        <label for="studentGrade">Grade:</label>
+        <select id="studentGrade" required>
+          <option value="9">9th Grade</option>
+          <option value="10">10th Grade</option>
+          <option value="11">11th Grade</option>
+          <option value="12">12th Grade</option>
+        </select>
+
+        <label for="eventSelect">Select Your Event:</label>
+        <select id="eventSelect" required>
+          <option value="">Loading events...</option>
+          <!-- Events inject here dynamically -->
+        </select>
+
+        <label for="submissionType">Registration Type:</label>
+        <select id="submissionType" required>
+          <option value="signups">Standard Signup</option>
+          <option value="presubmissions">Presubmission</option>
+          <option value="runoffs">Runoff</option>
+        </select>
+
+        <button type="submit">Submit Registration</button>
+        <p id="form-message"></p>
+      </form>
+    </section>
+
+    <!-- SECTION: OFFICER PORTAL -->
+    <section id="officer-section">
+      <h2>Officer Portal</h2>
+      <p>Add new custom events to the database.</p>
+      <form id="officer-form">
+        <label>Event Name:</label>
+        <input type="text" id="new-evt-name" required>
+        
+        <label>Category:</label>
+        <input type="text" id="new-evt-category" required>
+        
+        <label>Team Size:</label>
+        <input type="text" id="new-evt-team" required>
+
+        <button type="submit">Add Event to Database</button>
+        <p id="officer-message"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
