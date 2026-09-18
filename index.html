@@ -76,20 +76,37 @@
     <!-- SECTION: OFFICER PORTAL -->
     <section id="officer-section">
       <h2>Officer Portal</h2>
-      <p>Add new custom events to the database.</p>
-      <form id="officer-form">
-        <label>Event Name:</label>
-        <input type="text" id="new-evt-name" required>
-        
-        <label>Category:</label>
-        <input type="text" id="new-evt-category" required>
-        
-        <label>Team Size:</label>
-        <input type="text" id="new-evt-team" required>
+      
+      <!-- LOGIN VIEW -->
+      <div id="officer-login-view">
+        <p>Please verify your officer email to access the edit portal.</p>
+        <form id="officer-login-form">
+          <label for="officer-email">Officer Email:</label>
+          <input type="email" id="officer-email" required placeholder="you@school.edu">
+          <button type="submit">Verify Access</button>
+          <p id="login-message"></p>
+        </form>
+      </div>
 
-        <button type="submit">Add Event to Database</button>
-        <p id="officer-message"></p>
-      </form>
+      <!-- SECURE DASHBOARD VIEW -->
+      <div id="officer-dashboard-view" style="display: none;">
+        <p style="color: green; font-weight: bold;">✅ Access Granted. Welcome to the Edit Portal.</p>
+        
+        <h3>Add Custom Event</h3>
+        <form id="officer-form">
+          <label>Event Name:</label>
+          <input type="text" id="new-evt-name" required>
+          
+          <label>Category:</label>
+          <input type="text" id="new-evt-category" required>
+          
+          <label>Team Size:</label>
+          <input type="text" id="new-evt-team" required>
+
+          <button type="submit">Add Event to Database</button>
+          <p id="officer-message"></p>
+        </form>
+      </div>
     </section>
 
   </main>
