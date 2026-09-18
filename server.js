@@ -21,6 +21,22 @@ const writeJSON = (filename, data) => {
   fs.writeFileSync(path.join(__dirname, filename), JSON.stringify(data, null, 2));
 };
 
+// POST: Authenticate Officer Email
+app.post('/api/auth', (req, res) => {
+  const { email } = req.body;
+  const authorizedEmails = readJSON('officers.json');
+  
+  const isAuthorized = authorizedEmails.some(
+    (officerEmail) => officerEmail.toLowerCase() === email.toLowerCase()
+  );
+
+  if (isAuthorized) {
+    res.json({ success: true, message: 'Access granted' });
+  } else {
+    res.status(401).json({ success: false, message: 'Email not recognized as an officer.' });
+  }
+});
+
 // GET: Fetch all HOSA events
 app.get('/api/events', (req, res) => {
   const events = readJSON('custom_events.json');
