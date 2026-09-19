@@ -1,116 +1,392 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Downingtown East HOSA</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <div class="header-container">
-      <h1>Downingtown East HOSA</h1>
-      <nav>
-        <button onclick="showSection('events')">Events List</button>
-        <button onclick="showSection('signup')">Registration</button>
-        <button onclick="showSection('officer')">Officer Portal</button>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container">
-    
-    <!-- SECTION: EVENTS LIST -->
-    <section id="events-section" class="active">
-      <h2>Competitive Events</h2>
-      <p>Browse all available HOSA events for this year.</p>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Event Name</th>
-              <th>Category</th>
-              <th>Team Size</th>
-            </tr>
-          </thead>
-          <tbody id="event-table-body">
-            <!-- Events inject here dynamically -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- SECTION: SIGNUP FORM -->
-    <section id="signup-section">
-      <h2>Student Registration</h2>
-      <form id="signup-form">
-        <label for="studentName">Full Name:</label>
-        <input type="text" id="studentName" required placeholder="Jane Doe">
-
-        <label for="studentGrade">Grade:</label>
-        <select id="studentGrade" required>
-          <option value="9">9th Grade</option>
-          <option value="10">10th Grade</option>
-          <option value="11">11th Grade</option>
-          <option value="12">12th Grade</option>
-        </select>
-
-        <label for="eventSelect">Select Your Event:</label>
-        <select id="eventSelect" required>
-          <option value="">Loading events...</option>
-          <!-- Events inject here dynamically -->
-        </select>
-
-        <label for="submissionType">Registration Type:</label>
-        <select id="submissionType" required>
-          <option value="signups">Standard Signup</option>
-          <option value="presubmissions">Presubmission</option>
-          <option value="runoffs">Runoff</option>
-        </select>
-
-        <button type="submit">Submit Registration</button>
-        <p id="form-message"></p>
-      </form>
-    </section>
-
-    <!-- SECTION: OFFICER PORTAL -->
-    <section id="officer-section">
-      <h2>Officer Portal</h2>
-      
-      <!-- LOGIN VIEW -->
-      <div id="officer-login-view">
-        <p>Please verify your officer email to access the edit portal.</p>
-        <form id="officer-login-form">
-          <label for="officer-email">Officer Email:</label>
-          <input type="email" id="officer-email" required placeholder="you@school.edu">
-          <button type="submit">Verify Access</button>
-          <p id="login-message"></p>
-        </form>
-      </div>
-
-      <!-- SECURE DASHBOARD VIEW -->
-      <div id="officer-dashboard-view" style="display: none;">
-        <p style="color: green; font-weight: bold;">✅ Access Granted. Welcome to the Edit Portal.</p>
-        
-        <h3>Add Custom Event</h3>
-        <form id="officer-form">
-          <label>Event Name:</label>
-          <input type="text" id="new-evt-name" required>
-          
-          <label>Category:</label>
-          <input type="text" id="new-evt-category" required>
-          
-          <label>Team Size:</label>
-          <input type="text" id="new-evt-team" required>
-
-          <button type="submit">Add Event to Database</button>
-          <p id="officer-message"></p>
-        </form>
-      </div>
-    </section>
-
-  </main>
-
-  <script src="app.js"></script>
-</body>
-</html>
+@@ -0,0 +1,387 @@                                                                                                       
++<!DOCTYPE html>                                                                                                        
++<html lang="en">                                                                                                       
++<head>                                                                                                                 
++  <meta charset="UTF-8">                                                                                               
++  <meta name="viewport" content="width=device-width, initial-scale=1.0">                                               
++  <title>Downingtown East HOSA</title>                                                                                 
++  <link rel="stylesheet" href="style.css">                                                                             
++</head>                                                                                                                
++<body>                                                                                                                 
++  <!-- HEADER & NAVIGATION -->                                                                                         
++  <header>                                                                                                             
++    <div class="header-container">                                                                                     
++      <h1>Downingtown East HOSA</h1>                                                                                   
++      <nav class="main-nav">                                                                                           
++        <button onclick="showSection('home-section')">Home</button>                                                    
++        <button onclick="showSection('events-section')">Events</button>                                                
++        <button onclick="showSection('signup-section')">Signup</button>                                                
++        <button onclick="showSection('faq-section')">FAQ</button>                                                      
++        <button onclick="showSection('officer-portal')">Officer Portal</button>                                        
++        <button onclick="showSection('dev-section')">Dev Portal</button>                                               
++      </nav>                                                                                                           
++    </div>                                                                                                             
++  </header>                                                                                                            
++                                                                                                                       
++  <main class="container">                                                                                             
++                                                                                                                       
++    <!-- SECTION: AUTH -->                                                                                             
++    <section id="auth-section" class="active">                                                                         
++      <h2>Welcome Back, HOSA Member!</h2>                                                                              
++      <p>Please sign in to continue to your account.</p>                                                               
++                                                                                                                       
++      <div class="auth-container">                                                                                     
++        <!-- Local Email/Password Login -->                                                                            
++        <div class="auth-card">                                                                                        
++          <h3>Sign In with Email</h3>                                                                                  
++          <form id="auth-login-form">                                                                                  
++            <label for="auth-email">Email Address</label>                                                              
++            <input type="email" id="auth-email" required placeholder="you@school.edu">                                 
++            <label for="auth-password">Password</label>                                                                
++            <input type="password" id="auth-password" required placeholder="Your password">                            
++            <button type="submit">Sign In</button>                                                                     
++            <p id="auth-message"></p>                                                                                  
++          </form>                                                                                                      
++          <p class="auth-divider">or sign up here</p>                                                                  
++          <form id="auth-register-form">                                                                               
++            <label for="reg-name">Full Name</label>                                                                    
++            <input type="text" id="reg-name" required placeholder="Jane Doe">                                          
++            <label for="reg-email">Email Address</label>                                                               
++            <input type="email" id="reg-email" required placeholder="you@school.edu">                                  
++            <label for="reg-password">Password</label>                                                                 
++            <input type="password" id="reg-password" required placeholder="Create a password">                         
++            <button type="submit">Create Account</button>                                                              
++            <p id="register-message"></p>                                                                              
++          </form>                                                                                                      
++        </div>                                                                                                         
++                                                                                                                       
++        <!-- Social Login -->                                                                                          
++        <div class="auth-card">                                                                                        
++          <h3>Quick Sign In</h3>                                                                                       
++          <div class="social-buttons">                                                                                 
++            <button id="google-signin-btn" class="btn-google">                                                         
++              <span class="btn-icon">G</span> Sign in with Google                                                      
++            </button>                                                                                                  
++            <button id="apple-signin-btn" class="btn-apple">                                                           
++              <span class="btn-icon">🍎</span> Sign in with Apple                                                      
++            </button>                                                                                                  
++          </div>                                                                                                       
++          <p id="social-auth-message"></p>                                                                             
++        </div>                                                                                                         
++      </div>                                                                                                           
++    </section>                                                                                                         
++                                                                                                                       
++    <!-- SECTION: HOME -->                                                                                             
++    <section id="home-section">                                                                                        
++      <h2>Home</h2>                                                                                                    
++      <div class="card-grid">                                                                                          
++        <div class="card">                                                                                             
++          <h3>🏥 HOSA-Future Health Professionals</h3>                                                                 
++          <p>Welcome to the Downingtown East Chapter of HOSA. Our mission is to empower future health professionals    
+through education, leadership, and service.</p>                                                                         
++        </div>                                                                                                         
++        <div class="card">                                                                                             
++          <h3>📅 Upcoming Events</h3>                                                                                  
++          <p>Check out our competitive events and conferences. Stay tuned for dates and registration details.</p>      
++        </div>                                                                                                         
++        <div class="card">                                                                                             
++          <h3>👥 Meet Our Officers</h3>                                                                                
++          <p>Get to know the dedicated officers leading our chapter this year. Reach out to them with any              
+questions.</p>                                                                                                          
++        </div>                                                                                                         
++      </div>                                                                                                           
++    </section>                                                                                                         
++                                                                                                                       
++    <!-- SECTION: EVENTS -->                                                                                           
++    <section id="events-section">                                                                                      
++      <h2>Competitive Events</h2>                                                                                      
++      <p>Browse all available HOSA events for this year.</p>                                                           
++      <div class="table-container">                                                                                    
++        <table>                                                                                                        
++          <thead>                                                                                                      
++            <tr>                                                                                                       
++              <th>Event Name</th>                                                                                      
++              <th>Category</th>                                                                                        
++              <th>Team Size</th>                                                                                       
++            </tr>                                                                                                      
++          </thead>                                                                                                     
++          <tbody id="event-table-body">                                                                                
++            <!-- Events inject here dynamically -->                                                                    
++          </tbody>                                                                                                     
++        </table>                                                                                                       
++      </div>                                                                                                           
++    </section>                                                                                                         
++                                                                                                                       
++    <!-- SECTION: SIGNUP / AUTH -->                                                                                    
++    <section id="signup-section">                                                                                      
++      <h2>Student Registration</h2>                                                                                    
++      <form id="signup-form">                                                                                          
++        <label for="studentName">Full Name:</label>                                                                    
++        <input type="text" id="studentName" required placeholder="Jane Doe">                                           
++                                                                                                                       
++        <label for="studentGrade">Grade:</label>                                                                       
++        <select id="studentGrade" required>                                                                            
++          <option value="9">9th Grade</option>                                                                         
++          <option value="10">10th Grade</option>                                                                       
++          <option value="11">11th Grade</option>                                                                       
++          <option value="12">12th Grade</option>                                                                       
++        </select>                                                                                                      
++                                                                                                                       
++        <label for="eventSelect">Select Your Event:</label>                                                            
++        <select id="eventSelect" required>                                                                             
++          <option value="">Loading events...</option>                                                                  
++        </select>                                                                                                      
++                                                                                                                       
++        <label for="submissionType">Registration Type:</label>                                                         
++        <select id="submissionType" required>                                                                          
++          <option value="signups">Standard Signup</option>                                                             
++          <option value="presubmissions">Presubmission</option>                                                        
++          <option value="runoffs">Runoff</option>                                                                      
++        </select>                                                                                                      
++                                                                                                                       
++        <button type="submit">Submit Registration</button>                                                             
++        <p id="form-message"></p>                                                                                      
++      </form>                                                                                                          
++    </section>                                                                                                         
++                                                                                                                       
++    <!-- SECTION: FAQ -->                                                                                              
++    <section id="faq-section">                                                                                         
++      <h2>Frequently Asked Questions</h2>                                                                              
++      <div id="faq-list" class="faq-container">                                                                        
++        <!-- FAQs inject here dynamically -->                                                                          
++        <div class="faq-item">                                                                                         
++          <h4>What is HOSA?</h4>                                                                                       
++          <p>HOSA-Future Health Professionals is an international student organization recognized by the U.S.          
+Department of Education and the Health Science Technology Student Association.</p>                                      
++        </div>                                                                                                         
++        <div class="faq-item">                                                                                         
++          <h4>Who can join?</h4>                                                                                       
++          <p>Any student enrolled in a Health Science Education program is eligible to join HOSA.</p>                  
++        </div>                                                                                                         
++        <div class="faq-item">                                                                                         
++          <h4>How do I register for events?</h4>                                                                       
++          <p>Use the Registration tab above to sign up for competitive events. Make sure to select your preferred event
+and submission type.</p>                                                                                                
++        </div>                                                                                                         
++      </div>                                                                                                           
++      <div id="faq-manager" style="display:none;">                                                                     
++        <h3>Manage FAQs</h3>                                                                                           
++        <form id="faq-form">                                                                                           
++          <label for="faq-question">Question</label>                                                                   
++          <input type="text" id="faq-question" required placeholder="Enter question">                                  
++          <label for="faq-answer">Answer</label>                                                                       
++          <textarea id="faq-answer" required placeholder="Enter answer"></textarea>                                    
++          <button type="submit">Add FAQ</button>                                                                       
++          <p id="faq-message"></p>                                                                                     
++        </form>                                                                                                        
++      </div>                                                                                                           
++    </section>                                                                                                         
++                                                                                                                       
++    <!-- SECTION: OFFICER PORTAL (Tabbed) -->                                                                          
++    <section id="officer-portal">                                                                                      
++      <h2>Officer Portal</h2>                                                                                          
++                                                                                                                       
++      <!-- Officer Login View -->                                                                                      
++      <div id="officer-login-view">                                                                                    
++        <p>Please verify your officer email to access the edit portal.</p>                                             
++        <form id="officer-login-form">                                                                                 
++          <label for="officer-email">Officer Email:</label>                                                            
++          <input type="email" id="officer-email" required placeholder="you@school.edu">                                
++          <button type="submit">Verify Access</button>                                                                 
++          <p id="login-message"></p>                                                                                   
++        </form>                                                                                                        
++      </div>                                                                                                           
++                                                                                                                       
++      <!-- Secure Dashboard View -->                                                                                   
++      <div id="officer-dashboard-view" style="display: none;">                                                         
++        <p style="color: green; font-weight: bold;">✅ Access Granted. Welcome to the Edit Portal.</p>                 
++                                                                                                                       
++        <!-- Tabs -->                                                                                                  
++        <div class="tabs">                                                                                             
++          <button class="tab-btn active" onclick="switchTab('tab-analytics')">Analytics</button>                       
++          <button class="tab-btn" onclick="switchTab('tab-editor')">Event/Doc Editor</button>                          
++          <button class="tab-btn" onclick="switchTab('tab-tracker')">Submissions Tracker</button>                      
++          <button class="tab-btn" onclick="switchTab('tab-faq-manager')">FAQ Manager</button>                          
++          <button class="tab-btn" onclick="switchTab('tab-user-logs')">User Logs</button>                              
++        </div>                                                                                                         
++                                                                                                                       
++        <!-- Tab Content: Analytics -->                                                                                
++        <div id="tab-analytics" class="tab-content active">                                                            
++          <h3>📊 Chapter Analytics</h3>                                                                                
++          <div class="card-grid">                                                                                      
++            <div class="card stat-card">                                                                               
++              <h4>Total Members</h4>                                                                                   
++              <p id="stat-members">Loading...</p>                                                                      
++            </div>                                                                                                     
++            <div class="card stat-card">                                                                               
++              <h4>Events Registered</h4>                                                                               
++              <p id="stat-events">Loading...</p>                                                                       
++            </div>                                                                                                     
++            <div class="card stat-card">                                                                               
++              <h4>Pending Submissions</h4>                                                                             
++              <p id="stat-pending">Loading...</p>                                                                      
++            </div>                                                                                                     
++            <div class="card stat-card">                                                                               
++              <h4>Approved Submissions</h4>                                                                            
++              <p id="stat-approved">Loading...</p>                                                                     
++            </div>                                                                                                     
++          </div>                                                                                                       
++        </div>                                                                                                         
++                                                                                                                       
++        <!-- Tab Content: Event/Doc Editor -->                                                                         
++        <div id="tab-editor" class="tab-content">                                                                      
++          <h3>📝 Event / Document Editor</h3>                                                                          
++          <form id="officer-form">                                                                                     
++            <label>Event Name:</label>                                                                                 
++            <input type="text" id="new-evt-name" required placeholder="Enter event name">                              
++            <label>Category:</label>                                                                                   
++            <input type="text" id="new-evt-category" required placeholder="Enter category">                            
++            <label>Team Size:</label>                                                                                  
++            <input type="number" id="new-evt-team" required placeholder="1" min="1">                                   
++            <button type="submit">Add Event to Database</button>                                                       
++            <p id="officer-message"></p>                                                                               
++          </form>                                                                                                      
++          <div class="table-container" style="margin-top: 30px;">                                                      
++            <h4>Manage Events</h4>                                                                                     
++            <table>                                                                                                    
++              <thead>                                                                                                  
++                <tr>                                                                                                   
++                  <th>Event Name</th>                                                                                  
++                  <th>Category</th>                                                                                    
++                  <th>Team Size</th>                                                                                   
++                  <th>Actions</th>                                                                                     
++                </tr>                                                                                                  
++              </thead>                                                                                                 
++              <tbody id="manage-event-table-body">                                                                     
++                <!-- Managed events inject here -->                                                                    
++              </tbody>                                                                                                 
++            </table>                                                                                                   
++          </div>                                                                                                       
++        </div>                                                                                                         
++                                                                                                                       
++        <!-- Tab Content: Submissions Tracker -->                                                                      
++        <div id="tab-tracker" class="tab-content">                                                                     
++          <h3>📋 Submissions Tracker</h3>                                                                              
++          <div class="table-container">                                                                                
++            <table>                                                                                                    
++              <thead>                                                                                                  
++                <tr>                                                                                                   
++                  <th>Type</th>                                                                                        
++                  <th>Name</th>                                                                                        
++                  <th>Grade</th>                                                                                       
++                  <th>Event</th>                                                                                       
++                  <th>Status</th>                                                                                      
++                  <th>Date</th>                                                                                        
++                  <th>Actions</th>                                                                                     
++                </tr>                                                                                                  
++              </thead>                                                                                                 
++              <tbody id="tracker-table-body">                                                                          
++                <!-- Tracker rows inject here -->                                                                      
++              </tbody>                                                                                                 
++            </table>                                                                                                   
++          </div>                                                                                                       
++        </div>                                                                                                         
++                                                                                                                       
++        <!-- Tab Content: FAQ Manager -->                                                                              
++        <div id="tab-faq-manager" class="tab-content">                                                                 
++          <h3>❓ FAQ Manager</h3>                                                                                      
++          <form id="officer-faq-form">                                                                                 
++            <label for="officer-faq-question">Question</label>                                                         
++            <input type="text" id="officer-faq-question" required placeholder="Enter question">                        
++            <label for="officer-faq-answer">Answer</label>                                                             
++            <textarea id="officer-faq-answer" required placeholder="Enter answer"></textarea>                          
++            <button type="submit">Add FAQ</button>                                                                     
++            <p id="officer-faq-message"></p>                                                                           
++          </form>                                                                                                      
++          <div class="table-container" style="margin-top: 20px;">                                                      
++            <h4>Existing FAQs</h4>                                                                                     
++            <table>                                                                                                    
++              <thead>                                                                                                  
++                <tr>                                                                                                   
++                  <th>Question</th>                                                                                    
++                  <th>Answer</th>                                                                                      
++                  <th>Actions</th>                                                                                     
++                </tr>                                                                                                  
++              </thead>                                                                                                 
++              <tbody id="faq-manager-table-body">                                                                      
++                <!-- FAQ manager rows inject here -->                                                                  
++              </tbody>                                                                                                 
++            </table>                                                                                                   
++          </div>                                                                                                       
++        </div>                                                                                                         
++                                                                                                                       
++        <!-- Tab Content: User Logs -->                                                                                
++        <div id="tab-user-logs" class="tab-content">                                                                   
++          <h3>📝 User Logs</h3>                                                                                        
++          <div class="table-container">                                                                                
++            <table>                                                                                                    
++              <thead>                                                                                                  
++                <tr>                                                                                                   
++                  <th>ID</th>                                                                                          
++                  <th>Email</th>                                                                                       
++                  <th>Name</th>                                                                                        
++                  <th>Role</th>                                                                                        
++                  <th>Created At</th>                                                                                  
++                </tr>                                                                                                  
++              </thead>                                                                                                 
++              <tbody id="user-logs-table-body">                                                                        
++                <!-- User log rows inject here -->                                                                     
++              </tbody>                                                                                                 
++            </table>                                                                                                   
++          </div>                                                                                                       
++        </div>                                                                                                         
++      </div>                                                                                                           
++    </section>                                                                                                         
++                                                                                                                       
++    <!-- SECTION: DEV PORTAL (Hidden by default) -->                                                                   
++    <section id="dev-section" style="display: none;">                                                                  
++      <h2>🔒 Dev Portal</h2>                                                                                           
++      <p>Restricted access. Development and management tools.</p>                                                      
++                                                                                                                       
++      <div class="card-grid">                                                                                          
++        <div class="card">                                                                                             
++          <h3>👥 Roles Management</h3>                                                                                 
++          <p>View and manage all dev roles.</p>                                                                        
++          <div class="table-container">                                                                                
++            <table>                                                                                                    
++              <thead>                                                                                                  
++                <tr>                                                                                                   
++                  <th>ID</th>                                                                                          
++                  <th>Name</th>                                                                                        
++                  <th>Email</th>                                                                                       
++                  <th>Role</th>                                                                                        
++                </tr>                                                                                                  
++              </thead>                                                                                                 
++              <tbody id="dev-roles-table-body">                                                                        
++                <!-- Dev roles inject here -->                                                                         
++              </tbody>                                                                                                 
++            </table>                                                                                                   
++          </div>                                                                                                       
++        </div>                                                                                                         
++                                                                                                                       
++        <div class="card">                                                                                             
++          <h3>➕ Add Officer</h3>                                                                                      
++          <form id="dev-add-officer-form">                                                                             
++            <label for="dev-officer-name">Name</label>                                                                 
++            <input type="text" id="dev-officer-name" required placeholder="Officer Name">                              
++            <label for="dev-officer-email">Email</label>                                                               
++            <input type="email" id="dev-officer-email" required placeholder="Officer Email">                           
++            <button type="submit">Add Officer</button>                                                                 
++            <p id="dev-officer-message"></p>                                                                           
++          </form>                                                                                                      
++        </div>                                                                                                         
++                                                                                                                       
++        <div class="card">                                                                                             
++          <h3>➕ Add Advisor</h3>                                                                                      
++          <form id="dev-add-advisor-form">                                                                             
++            <label for="dev-advisor-name">Name</label>                                                                 
++            <input type="text" id="dev-advisor-name" required placeholder="Advisor Name">                              
++            <label for="dev-advisor-email">Email</label>                                                               
++            <input type="email" id="dev-advisor-email" required placeholder="Advisor Email">                           
++            <button type="submit">Add Advisor</button>                                                                 
++            <p id="dev-advisor-message"></p>                                                                           
++          </form>                                                                                                      
++        </div>                                                                                                         
++      </div>                                                                                                           
++    </section>                                                                                                         
++                                                                                                                       
++  </main>                                                                                                              
++                                                                                                                       
++  <script src="app.js"></script>                                                                                       
++</body>                                                                                                                
++</html> 
