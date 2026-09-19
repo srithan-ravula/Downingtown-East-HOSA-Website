@@ -21,15 +21,57 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-producti
 // Google OAuth Client                                                                                                  
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);                                                    
                                                                                                                         
+// Helper function to dynamically determine user role from specialized tables                                           
+async function determineUserRole(email) {                                                                               
+  try {                                                                                                                 
+    const devCheck = await pool.query('SELECT role FROM devs WHERE email = $1', [email]);                               
+    if (devCheck.rows.length > 0) return devCheck.rows[0].role || 'dev';                                                
+                                                                                                                        
+    const advisorCheck = await pool.query('SELECT role FROM advisors WHERE email = $1', [email]);                       
+    if (advisorCheck.rows.length > 0) return advisorCheck.rows[0].role || 'advisor';                                    
+                                                                                                                        
+    const officerCheck = await pool.query('SELECT role FROM officers WHERE email = $1', [email]);                       
+    if (officerCheck.rows.length > 0) return officerCheck.rows[0].role || 'officer';                                    
+                                                                                                                        
+    return 'student';                                                                                                   
+  } catch (error) {                                                                                                     
+    console.error('Error determining user role:', error);                                                               
+    return 'student';                                                                                                   
+  }                                                                                                                     
+}                                                                                                                       
+                                                                                                                        
+// Helper function to get user name from specialized tables or users table                                              
+async function getUserName(email) {                                                                                     
+  try {                                                                                                                 
+    const devCheck = await pool.query('SELECT name FROM devs WHERE email = $1', [email]);                               
+    if (devCheck.rows.length > 0) return devCheck.rows[0].name;                                                         
+                                                                                                                        
+    const advisorCheck = await pool.query('SELECT name FROM advisors WHERE email = $1', [email]);                       
+    if (advisorCheck.rows.length > 0) return advisorCheck.rows[0].name;                                                 
+                                                                                                                        
+    const officerCheck = await pool.query('SELECT name FROM officers WHERE email = $1', [email]);                       
+    if (officerCheck.rows.length > 0) return officerCheck.rows[0].name;                                                 
+                                                                                                                        
+    const userCheck = await pool.query('SELECT name FROM users WHERE email = $1', [email]);                             
+    if (userCheck.rows.length > 0) return userCheck.rows[0].name;                                                       
+                                                                                                                        
+    return email;                                                                                                       
+  } catch (error) {                                                                                                     
+    console.error('Error getting user name:', error);                                                                   
+    return email;                                                                                                       
+  }                                                                                                                     
+}                                                                                                                       
+                                                                                                                        
 // Initialize Database                                                                                                  
 async function initDB() {                                                                                               
   const client = await pool.connect();                                                                                  
   try {                                                                                                                 
-    // Create users table                                                                                               
+    // Create users table with name field                                                                               
     await client.query(`                                                                                                
       CREATE TABLE IF NOT EXISTS users (                                                                                
         id SERIAL PRIMARY KEY,                                                                                          
         email VARCHAR(255) UNIQUE NOT NULL,                                                                             
+        name VARCHAR(255),                                                                                              
         password_hash VARCHAR(255),                                                                                     
         role VARCHAR(50) DEFAULT 'student',                                                                             
         google_id VARCHAR(255),                                                                                         
@@ -165,8 +207,51 @@ const authenticateToken = (req, res, next) => {
   });                                                                                                                   
 };                                                                                                                      
                                                                                                                         
-// Standard Email/Password Login                                                                                        
-app.post('/api/auth/email', async (req, res) => {                                                                       
+// POST /api/auth/register - Register new user with bcrypt hashing                                                      
+app.post('/api/auth/register', async (req, res) => {                                                                    
+  try {                                                                                                                 
+    const { email, password, name } = req.body;                                                                         
+                                                                                                                        
+    if (!email || !password) {                                                                                          
+      return res.status(400).json({ success: false, message: 'Email and password required' });                          
+    }                                                                                                                   
+                                                                                                                        
+    // Check if user exists                                                                                             
+    const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);                             
+    if (existingUser.rows.length > 0) {                                                                                 
+      return res.status(400).json({ success: false, message: 'User already exists' });                                  
+    }                                                                                                                   
+                                                                                                                        
+    // Hash password                                                                                                    
+    const password_hash = await bcrypt.hash(password, 10);                                                              
+                                                                                                                        
+    // Determine role dynamically                                                                                       
+    const role = await determineUserRole(email);                                                                        
+                                                                                                                        
+    // Insert user                                                                                                      
+    const result = await pool.query(                                                                                    
+      'INSERT INTO users (email, name, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id, email, name, role',   
+      [email, name || email, password_hash, role]                                                                       
+    );                                                                                                                  
+                                                                                                                        
+    const user = result.rows[0];                                                                                        
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET);                            
+                                                                                                                        
+    res.json({                                                                                                          
+      success: true,                                                                                                    
+      token,                                                                                                            
+      email: user.email,                                                                                                
+      name: user.name,                                                                                                  
+      role: user.role                                                                                                   
+    });                                                                                                                 
+  } catch (error) {                                                                                                     
+    console.error('Registration error:', error);                                                                        
+    res.status(500).json({ success: false, message: 'Server error' });                                                  
+  }                                                                                                                     
+});                                                                                                                     
+                                                                                                                        
+// POST /api/auth/login/local - Standard email/password login                                                           
+app.post('/api/auth/login/local', async (req, res) => {                                                                 
   try {                                                                                                                 
     const { email, password } = req.body;                                                                               
                                                                                                                         
@@ -182,15 +267,19 @@ app.post('/api/auth/email', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });                                  
     }                                                                                                                   
                                                                                                                         
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET);                            
-    res.json({ success: true, token, user: { id: user.id, email: user.email, role: user.role } });                      
+    // Dynamically evaluate role                                                                                        
+    const role = await determineUserRole(email);                                                                        
+    const name = await getUserName(email);                                                                              
+                                                                                                                        
+    const token = jwt.sign({ id: user.id, email: user.email, role }, JWT_SECRET);                                       
+    res.json({ success: true, token, email: user.email, name, role });                                                  
   } catch (error) {                                                                                                     
     res.status(500).json({ success: false, message: 'Server error' });                                                  
   }                                                                                                                     
 });                                                                                                                     
                                                                                                                         
-// Google Sign-In                                                                                                       
-app.post('/api/auth/google', async (req, res) => {                                                                      
+// POST /api/auth/login/google - Google OAuth login                                                                     
+app.post('/api/auth/login/google', async (req, res) => {                                                                
   try {                                                                                                                 
     const { credential } = req.body;                                                                                    
     const ticket = await googleClient.verifyIdToken({                                                                   
@@ -200,34 +289,73 @@ app.post('/api/auth/google', async (req, res) => {
     const payload = ticket.getPayload();                                                                                
     const googleId = payload.sub;                                                                                       
     const email = payload.email;                                                                                        
+    const name = payload.name;                                                                                          
                                                                                                                         
     let user = await pool.query('SELECT * FROM users WHERE google_id = $1 OR email = $2', [googleId, email]);           
                                                                                                                         
     if (user.rows.length === 0) {                                                                                       
       const hash = await bcrypt.hash('google_oauth', 10);                                                               
+      const role = await determineUserRole(email);                                                                      
       const newUser = await pool.query(                                                                                 
-        'INSERT INTO users (email, password_hash, google_id, role) VALUES ($1, $2, $3, $4) RETURNING *',                
-        [email, hash, googleId, 'student']                                                                              
+        'INSERT INTO users (email, name, password_hash, google_id, role) VALUES ($1, $2, $3, $4, $5) RETURNING *',      
+        [email, name, hash, googleId, role]                                                                             
       );                                                                                                                
       user = newUser;                                                                                                   
     } else {                                                                                                            
       user = user.rows[0];                                                                                              
+      // Update role dynamically if needed                                                                              
+      const role = await determineUserRole(email);                                                                      
+      if (user.role !== role) {                                                                                         
+        await pool.query('UPDATE users SET role = $1 WHERE id = $2', [role, user.id]);                                  
+        user.role = role;                                                                                               
+      }                                                                                                                 
     }                                                                                                                   
                                                                                                                         
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET);                            
-    res.json({ success: true, token, user: { id: user.id, email: user.email, role: user.role } });                      
+    const userName = await getUserName(email);                                                                          
+                                                                                                                        
+    res.json({ success: true, token, email: user.email, name: userName, role: user.role });                             
   } catch (error) {                                                                                                     
     res.status(500).json({ success: false, message: 'Google auth failed' });                                            
   }                                                                                                                     
 });                                                                                                                     
                                                                                                                         
-// Apple Sign-In                                                                                                        
-app.post('/api/auth/apple', async (req, res) => {                                                                       
+// POST /api/auth/login/apple - Apple Sign-In                                                                           
+app.post('/api/auth/login/apple', async (req, res) => {                                                                 
   try {                                                                                                                 
-    const { identityToken } = req.body;                                                                                 
+    const { identityToken, email } = req.body;                                                                          
+                                                                                                                        
     // Apple JS API verification would go here                                                                          
-    // For now, return success with placeholder                                                                         
-    res.json({ success: true, message: 'Apple auth endpoint ready' });                                                  
+    // For now, validate the email is provided                                                                          
+    if (!email) {                                                                                                       
+      return res.status(400).json({ success: false, message: 'Email required for Apple auth' });                        
+    }                                                                                                                   
+                                                                                                                        
+    // In production, verify the Apple identity token here                                                              
+    // For now, proceed with email-based logic                                                                          
+    let user = await pool.query('SELECT * FROM users WHERE apple_id = $1 OR email = $2', [identityToken, email]);       
+                                                                                                                        
+    if (user.rows.length === 0) {                                                                                       
+      const hash = await bcrypt.hash('apple_oauth', 10);                                                                
+      const role = await determineUserRole(email);                                                                      
+      const newUser = await pool.query(                                                                                 
+        'INSERT INTO users (email, password_hash, apple_id, role) VALUES ($1, $2, $3, $4) RETURNING *',                 
+        [email, hash, identityToken, role]                                                                              
+      );                                                                                                                
+      user = newUser;                                                                                                   
+    } else {                                                                                                            
+      user = user.rows[0];                                                                                              
+      const role = await determineUserRole(email);                                                                      
+      if (user.role !== role) {                                                                                         
+        await pool.query('UPDATE users SET role = $1 WHERE id = $2', [role, user.id]);                                  
+        user.role = role;                                                                                               
+      }                                                                                                                 
+    }                                                                                                                   
+                                                                                                                        
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET);                            
+    const userName = await getUserName(email);                                                                          
+                                                                                                                        
+    res.json({ success: true, token, email: user.email, name: userName, role: user.role });                             
   } catch (error) {                                                                                                     
     res.status(500).json({ success: false, message: 'Apple auth failed' });                                             
   }                                                                                                                     
